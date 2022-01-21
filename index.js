@@ -7,27 +7,58 @@ canvas.height = window.innerHeight * 0.9;
 
 // Declare Player Class
 class Player {
-    constructor(gameWidth, gameHeight) {
-        this.width = gameWidth * 0.05;
-        this.height = gameHeight * 0.05;
+    constructor() {
+        this.width = canvas.width * 0.05;
+        this.height = canvas.height * 0.05;
         this.position = {
-            x: gameWidth / 2,
-            y: gameHeight - this.height - 20
+            x: canvas.width / 2,
+            y: canvas.height - this.height - 20
         }
         this.image = new Image;
-        this.image.src = "./images/spaceship.jpg";
+        this.image.src = "./images/spaceship.png";
     }
     draw() {
-        context.drawImage(this.image, this.position.x, this.position.y,this.width, this.height);
+        context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
     }
 }
 
 // Iniate player from Player Class
 const player = new Player(canvas.width, canvas.height);
 
+// Declare Background Class
+class Background {
+    constructor(backgroundImage) {
+        this.position = {
+            x: 0,
+            y: 0
+        };
+        this.width = canvas.width;
+        this.height = canvas.height;
+        this.image = new Image();
+        this.image.src = backgroundImage;
+    }
+    draw() {
+        this.position.y++;
+        if (this.position.y > canvas.height) {
+            this.position.y = 0;
+        }
+        else {
+            context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+            context.drawImage(this.image, this.position.x, this.position.y - this.height, this.width, this.height);
+        }
+    }
+    gameOver() {
+        context.font = "50px Arial";
+        context.fillText("Game Over", 100, 100);
+    }
+}
+
+const background = new Background("./images/space.jpg");
+
 // Create animation Loop
 function animationLoop() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+    background.draw();
     player.draw();
     console.log(requestAnimationFrame(animationLoop));
 }
