@@ -9,7 +9,7 @@ canvas.height = window.innerHeight * 0.9;
 class Player {
     constructor() {
         this.width = canvas.width * 0.05;
-        this.height = canvas.height * 0.05;
+        this.height = canvas.height * 0.1;
         this.position = {
             x: canvas.width / 2,
             y: canvas.height - this.height - 20
@@ -53,6 +53,7 @@ class Background {
     }
 }
 
+// Iniate player from Player Class
 const background = new Background("./images/space.jpg");
 
 // Create animation Loop
@@ -60,7 +61,27 @@ function animationLoop() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     background.draw();
     player.draw();
-    console.log(requestAnimationFrame(animationLoop));
+    requestAnimationFrame(animationLoop);
 }
 
 animationLoop();
+
+// Generate movement pattern for the player
+addEventListener("keydown", event => {
+    switch (event.key) {
+        case "ArrowLeft":
+            player.position.x -= 20;
+            break;
+        case "ArrowRight":
+            player.position.x += 20;
+            break;
+        case "ArrowUp":
+            player.position.y -= 20;
+            break;
+        case "ArrowDown":
+            player.position.y += 20;
+            break;
+        default:
+            break;
+        };
+    });
