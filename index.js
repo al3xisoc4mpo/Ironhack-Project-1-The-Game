@@ -11,7 +11,7 @@ class Player {
         this.width = canvas.width * 0.05;
         this.height = canvas.height * 0.1;
         this.position = {
-            x: canvas.width / 2,
+            x: canvas.width / 2 - (this.width / 2),
             y: canvas.height - this.height - 20
         }
         this.image = new Image;
@@ -38,7 +38,7 @@ class Background {
         this.image.src = backgroundImage;
     }
     draw() {
-        this.position.y++;
+        this.position.y += 3;
         if (this.position.y > canvas.height) {
             this.position.y = 0;
         }
@@ -70,18 +70,34 @@ animationLoop();
 addEventListener("keydown", event => {
     switch (event.key) {
         case "ArrowLeft":
-            player.position.x -= 20;
+            if ((player.position.x - 20) < 0) {
+                player.position.x = 0;
+            } else {
+                player.position.x -= 20;
+            }
             break;
         case "ArrowRight":
-            player.position.x += 20;
+            if ((player.position.x + player.width + 20) >= canvas.width) {
+                player.position.x = canvas.width - player.width;
+            } else {
+                player.position.x += 20;
+            }
             break;
         case "ArrowUp":
-            player.position.y -= 20;
+            if ((player.position.y - 20) <= 0) {
+                player.position.y = 0;
+            } else {
+                player.position.y -= 20;
+            }
             break;
         case "ArrowDown":
-            player.position.y += 20;
+            if ((player.position.y + player.height + 20) >= canvas.height) {
+                player.position.y = canvas.height - player.height;
+            } else {
+                player.position.y += 20;
+            }
             break;
         default:
             break;
-        };
-    });
+    };
+});
