@@ -6,6 +6,7 @@ canvas.width = window.innerWidth * 0.9;
 canvas.height = window.innerHeight * 0.9;
 
 let frames = 0;
+let SpaceToDestination
 
 const asteroids = [];
 const asteroidImage = new Image();
@@ -26,6 +27,14 @@ class Player {
     draw() {
         context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
     }
+    collision(object){
+        return (
+            this.position.x < object.position.x + object.width &&
+            this.position.x + this.width > object.position.x &&
+            this.position.y < object.position.y + object.height &&
+            this.position.y + this.height > object.position.y
+            )
+    }
 }
 
 // Iniate player from Player Class
@@ -36,7 +45,7 @@ class Obstacle {
         this.height = height;
         this.position = {
             x: Math.floor(Math.random() * canvas.width),
-            y: 0
+            y: -this.width
         }
         this.image = new Image();
         this.image.src = img.src;
@@ -54,13 +63,20 @@ class Obstacle {
 }
 
 function generateAsteroids() {
-    if (frames % 100 === 0) {
+    if (frames % 300 === 0 || frames % 500 === 0) {
         const asteroid = new Obstacle(80, 80, asteroidImage, 1, 0.5, 1);
         asteroids.push(asteroid);
     }
-    asteroids.forEach((asteroid) => {
+    asteroids.forEach((asteroid,asteroid_index) => {
         asteroid.draw();
+        if(player.collision(asteroid)){
+            console.log(player.collision(asteroid));
+        }
+        if(asteroid.position.x + asteroid.width <= 0 || asteroid.position.x >= canvas.width || asteroid.position.y + asteroid.height >= canvas.height){
+            asteroids.splice(asteroid_index,1);
+        }
     })
+
 }
 
 // Declare Background Class
