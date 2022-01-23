@@ -5,6 +5,12 @@ const context = canvas.getContext("2d");
 canvas.width = window.innerWidth * 0.9;
 canvas.height = window.innerHeight * 0.9;
 
+let frames = 0;
+
+const asteroids = [];
+const asteroidImage = new Image();
+asteroidImage.src = "./images/asteroid.png";
+
 // Declare Player Class
 class Player {
     constructor() {
@@ -14,7 +20,7 @@ class Player {
             x: canvas.width / 2 - (this.width / 2),
             y: canvas.height - this.height - 20
         }
-        this.image = new Image;
+        this.image = new Image();
         this.image.src = "./images/spaceship.png";
     }
     draw() {
@@ -24,6 +30,38 @@ class Player {
 
 // Iniate player from Player Class
 const player = new Player(canvas.width, canvas.height);
+class Obstacle {
+    constructor(width, height, img, maxHP, speedX, speedY) {
+        this.width = width;
+        this.height = height;
+        this.position = {
+            x: Math.floor(Math.random() * canvas.width),
+            y: 0
+        }
+        this.image = new Image();
+        this.image.src = img.src;
+        this.health = maxHP;
+        this.speed = {
+            x: (Math.random()>0.5?1:-1) * speedX,
+            y: speedY
+        }
+    }
+    draw() {
+        this.position.x += this.speed.x;
+        this.position.y += this.speed.y;
+        context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+    }
+}
+
+function generateAsteroids() {
+    if (frames % 100 === 0) {
+        const asteroid = new Obstacle(80, 80, asteroidImage, 1, 0.5, 1);
+        asteroids.push(asteroid);
+    }
+    asteroids.forEach((asteroid) => {
+        asteroid.draw();
+    })
+}
 
 // Declare Background Class
 class Background {
@@ -58,9 +96,11 @@ const background = new Background("./images/space.jpg");
 
 // Create animation Loop
 function animationLoop() {
+    frames++;
     context.clearRect(0, 0, canvas.width, canvas.height);
     background.draw();
     player.draw();
+    generateAsteroids();
     requestAnimationFrame(animationLoop);
 }
 
