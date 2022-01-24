@@ -1,18 +1,21 @@
-// Setup canvas
+// Canvas Set-Up
 const canvas = document.getElementById("gameScreen");
 const context = canvas.getContext("2d");
 
 canvas.width = window.innerWidth * 0.9;
 canvas.height = window.innerHeight * 0.9;
 
+// Declaring and/or initializing core game variables
 let animationFrame;
-let status;
-let frames = 0;
-let lightYears = 10;
+let frames = 0; // for animation flow control
+let lightYears = 10; // distance from goal, when light years reaches 0 you win
 
+const proyectiles = [];
 const asteroids = [];
 const asteroidImage = new Image();
 asteroidImage.src = "./images/asteroid.png";
+const proyectileImage = new Image();
+proyectileImage.src = "./images/proyectile.png"
 
 // Declare Player Class
 class Player {
@@ -68,6 +71,40 @@ class Obstacle {
     }
 }
 
+class Item {
+    constructor(width, height, img, positionX, positionY, speedX, speedY) {
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
+        this.image.src = img;
+        this.position = {
+            x: positionX,
+            y: positionY
+        };
+        this.speed = {
+            x: speedX,
+            y: speedY
+        };
+    }
+    draw() {
+        this.position.x += this.speed.x;
+        this.position.y += this.speed.y;
+        context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+    }
+}
+
+class Proyectile extends Item {
+    constructor(width, height, img, positionX, positionY, speedX, speedY) {
+        super(width, height, img, positionX, positionY, speedX, speedY);
+    }
+    draw() {
+        this.position.x += this.speed.x;
+        this.position.y += this.speed.y;
+        context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+    }
+}
+
+// Generate Asteroids
 function generateAsteroids() {
     if (frames % 100 === 0 || frames % 300 === 0) {
         const asteroid = new Obstacle(80, 80, asteroidImage, 1, 0.5, 1);
@@ -78,14 +115,11 @@ function generateAsteroids() {
         if (player.collision(asteroid)) {
             player.shield--;
             asteroids.splice(asteroid_index, 1);
-            // background.gameOver();
-            // animationFrame = undefined;
         }
         if (asteroid.position.x + asteroid.width <= 0 || asteroid.position.x >= canvas.width || asteroid.position.y + asteroid.height >= canvas.height) {
             asteroids.splice(asteroid_index, 1);
         }
     })
-
 }
 
 // Declare Background Class
@@ -109,7 +143,6 @@ class Background {
             context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
             context.drawImage(this.image, this.position.x, this.position.y - this.height, this.width, this.height);
         }
-        printStats();
     }
     gameOver() {
         context.font = "bold 50px Arial";
@@ -130,6 +163,8 @@ function animationLoop() {
     background.draw();
     player.draw();
     generateAsteroids();
+    launchProyectiles();
+    printStats();
     switch (statusCheck()) {
         case "loose":
             animationFrame = undefined;
@@ -186,6 +221,10 @@ addEventListener("keydown", event => {
                 player.position.y += 20;
             }
             break;
+        case " ":
+            proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImage.src, player.position.x + player.width / 4, player.position.y, 0, -5));
+            console.log(proyectiles);
+            break;
         default:
             break;
     };
@@ -222,4 +261,13 @@ function printStats() {
     context.fillText(`Light Years to Home: ${lightYears}`, canvas.width / 2, 50);
     context.textAlign = "right"
     context.fillText(`Shield: ${player.shield}`, (canvas.width - canvas.width / 8), 50);
+}
+
+function launchProyectiles() {
+    proyectiles.forEach((proyectile, proyectile_index) => {
+        proyectile.draw();
+        if (proyectile.position.y + proyectile.height <= 0) {
+            proyectiles.splice(proyectile_index, 1);
+        }
+    });
 }
