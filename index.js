@@ -6,6 +6,7 @@ canvas.width = window.innerWidth * 0.9;
 canvas.height = window.innerHeight * 0.9;
 
 let animationFrame;
+let status;
 let frames = 0;
 let lightYears = 10;
 
@@ -75,8 +76,10 @@ function generateAsteroids() {
     asteroids.forEach((asteroid, asteroid_index) => {
         asteroid.draw();
         if (player.collision(asteroid)) {
-            background.gameOver();
-            animationFrame = undefined;
+            player.shield--;
+            asteroids.splice(asteroid_index, 1);
+            // background.gameOver();
+            // animationFrame = undefined;
         }
         if (asteroid.position.x + asteroid.width <= 0 || asteroid.position.x >= canvas.width || asteroid.position.y + asteroid.height >= canvas.height) {
             asteroids.splice(asteroid_index, 1);
@@ -119,19 +122,26 @@ class Background {
 // Iniate background from Player Class
 const background = new Background("./images/space.jpg");
 
-
-
-
-
 // Function to create animation Loop
 function animationLoop() {
     frames++;
     context.clearRect(0, 0, canvas.width, canvas.height);
     statsUpdate();
-    statusCheck();
     background.draw();
     player.draw();
     generateAsteroids();
+    switch (statusCheck()) {
+        case "loose":
+            animationFrame = undefined;
+            console.log("loose")
+            break;
+        case "win":
+            animationFrame = undefined;
+            console.log("win")
+            break;
+        default:
+            break;
+    }
     if (animationFrame) {
         animationFrame = requestAnimationFrame(animationLoop);
     };
