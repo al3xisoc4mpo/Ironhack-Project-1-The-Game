@@ -91,6 +91,14 @@ class Item {
         this.position.y += this.speed.y;
         context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
     }
+    collision(object) {
+        return (
+            this.position.x < object.position.x + object.width &&
+            this.position.x + this.width > object.position.x &&
+            this.position.y < object.position.y + object.height &&
+            this.position.y + this.height > object.position.y
+        )
+    }
 }
 
 class Proyectile extends Item {
@@ -116,10 +124,16 @@ function generateAsteroids() {
             player.shield--;
             asteroids.splice(asteroid_index, 1);
         }
+        proyectiles.forEach((proyectile,proyectile_index) => {
+            if (proyectile.collision(asteroid)) {
+                asteroids.splice(asteroid_index, 1);
+                proyectiles.splice(proyectile_index,1);
+            }
+        });
         if (asteroid.position.x + asteroid.width <= 0 || asteroid.position.x >= canvas.width || asteroid.position.y + asteroid.height >= canvas.height) {
-            asteroids.splice(asteroid_index, 1);
-        }
-    })
+        asteroids.splice(asteroid_index, 1);
+    }
+})
 }
 
 // Declare Background Class
@@ -193,32 +207,32 @@ startGame();
 addEventListener("keydown", event => {
     switch (event.key) {
         case "ArrowLeft":
-            if ((player.position.x - 20) < 0) {
+            if ((player.position.x - 30) < 0) {
                 player.position.x = 0;
             } else {
 
-                player.position.x -= 20;
+                player.position.x -= 30;
             }
             break;
         case "ArrowRight":
-            if ((player.position.x + player.width + 20) >= canvas.width) {
+            if ((player.position.x + player.width + 30) >= canvas.width) {
                 player.position.x = canvas.width - player.width;
             } else {
-                player.position.x += 20;
+                player.position.x += 30;
             }
             break;
         case "ArrowUp":
-            if ((player.position.y - 20) <= 0) {
+            if ((player.position.y - 30) <= 0) {
                 player.position.y = 0;
             } else {
-                player.position.y -= 20;
+                player.position.y -= 30;
             }
             break;
         case "ArrowDown":
-            if ((player.position.y + player.height + 20) >= canvas.height) {
+            if ((player.position.y + player.height + 30) >= canvas.height) {
                 player.position.y = canvas.height - player.height;
             } else {
-                player.position.y += 20;
+                player.position.y += 30;
             }
             break;
         case " ":
