@@ -1,0 +1,29 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(./images/nasaplanetnebula.jpg);
+    font-family: 'Press Start 2P', cursive;
+    color:white;
+    box-sizing: border-box;
+    margin: 5% 10%;
+    text-align: center;
+}
+
+#nav-button {
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    padding: 20px;
+    margin: 20px;
+    border: 12px solid white;
+}
+#nav-button:hover {
+    color: lightsteelblue;
+    text-decoration: none;
+    font-size: 30px;
+    padding: 20px;
+    margin: 20px;
+    border: 12px solid lightsteelblue;
+}

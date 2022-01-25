@@ -5,7 +5,14 @@ const context = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = 800;
 
-
+window.onload = () => {
+    document.getElementById('play-button').onclick = () => {
+    startGame();
+    };
+    function startGame() {
+        animationFrame = requestAnimationFrame(animationLoop)
+    }
+};
 
 
 // Declaring and/or initializing core game variables
@@ -13,9 +20,12 @@ let animationFrame = null; // to toggle game start/stop
 let frames = 0; // for animation flow control
 let lightYears = 10; // distance from goal, when light years reaches 0 you win
 
+// Declaring and assigning empty arrays for all obstacles/objects in the game
 const proyectiles = [];
 const asteroids = [];
 const blackHoles = [];
+
+
 const asteroidImage = new Image();
 asteroidImage.src = "./images/asteroid.png";
 const blackHoleImage = new Image();
@@ -152,7 +162,7 @@ function generateBlackHoles() {
     blackHoles.forEach((blackHole, blackHole_index) => {
         blackHole.draw();
         if (player.collision(blackHole)) {
-            player.fuel--;
+            player.fuel -= 30;
             blackHoles.splice(blackHole_index, 1);
         }
         proyectiles.forEach((proyectile, proyectile_index) => {
@@ -234,11 +244,9 @@ function animationLoop() {
 }
 
 // Function to start the game
-function startGame() {
-    animationFrame = requestAnimationFrame(animationLoop)
-}
-
-startGame();
+// function startGame() {
+//     animationFrame = requestAnimationFrame(animationLoop)
+// }
 
 // Generate movement pattern for the player
 addEventListener("keydown", event => {
@@ -305,6 +313,7 @@ function statusCheck() {
 
 // Function to print stats in screen
 function printStats() {
+
     context.font = "bold 20px Arial";
     context.fillStyle = "white"
     context.textAlign = "left"
