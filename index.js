@@ -6,14 +6,17 @@ canvas.width = window.innerWidth * 0.9;
 canvas.height = window.innerHeight * 0.9;
 
 // Declaring and/or initializing core game variables
-let animationFrame;
+let animationFrame = null;
 let frames = 0; // for animation flow control
 let lightYears = 10; // distance from goal, when light years reaches 0 you win
 
 const proyectiles = [];
 const asteroids = [];
+const blackHoles = [];
 const asteroidImage = new Image();
 asteroidImage.src = "./images/asteroid.png";
+const blackHoleImage = new Image();
+blackHoleImage.src = "./images/black hole.png";
 const proyectileImage = new Image();
 proyectileImage.src = "./images/proyectile.png"
 
@@ -53,7 +56,7 @@ class Obstacle {
         this.width = width;
         this.height = height;
         this.position = {
-            x: Math.floor(Math.random() * canvas.width),
+            x: Math.floor(Math.random() * canvas.width - this.width),
             y: -this.width
         }
         this.image = new Image();
@@ -124,17 +127,44 @@ function generateAsteroids() {
             player.shield--;
             asteroids.splice(asteroid_index, 1);
         }
-        proyectiles.forEach((proyectile,proyectile_index) => {
+        proyectiles.forEach((proyectile, proyectile_index) => {
             if (proyectile.collision(asteroid)) {
                 asteroids.splice(asteroid_index, 1);
-                proyectiles.splice(proyectile_index,1);
+                proyectiles.splice(proyectile_index, 1);
             }
         });
-        if (asteroid.position.x + asteroid.width <= 0 || asteroid.position.x >= canvas.width || asteroid.position.y + asteroid.height >= canvas.height) {
-        asteroids.splice(asteroid_index, 1);
-    }
-})
+        if (asteroid.position.x + asteroid.width <= 0 || asteroid.position.x >= canvas.width || asteroid.position.y >= canvas.height) {
+            asteroids.splice(asteroid_index, 1);
+            console.log(asteroids);
+        }
+    })
 }
+
+// Generate Black Holes
+function generateBlackHoles() {
+    if (frames % 1000 === 0) {
+        const blackHole = new Obstacle(player.width*4, player.height*4, blackHoleImage, 1, 0, 0.5);
+        blackHoles.push(blackHole);
+    }
+    blackHoles.forEach((blackHole, blackHole_index) => {
+        blackHole.draw();
+        if (player.collision(blackHole)) {
+            player.fuel--;
+            blackHoles.splice(blackHole_index, 1);
+        }
+        proyectiles.forEach((proyectile, proyectile_index) => {
+            if (proyectile.collision(blackHole)) {
+                proyectiles.splice(proyectile_index, 1);
+            }
+        });
+        if (blackHole.position.y >= canvas.height) {
+            blackHoles.splice(blackHole_index, 1);
+            console.log(blackHoles);
+        }
+    })
+}
+
+
 
 // Declare Background Class
 class Background {
@@ -159,6 +189,8 @@ class Background {
         }
     }
     gameOver() {
+        context.fillStyle = "rgba(0,0,0,0.8)"
+        context.fillRect(0,0,canvas.width,canvas.height);
         context.font = "bold 50px Arial";
         context.textAlign = "center"
         context.fillStyle = "white"
@@ -176,17 +208,19 @@ function animationLoop() {
     statsUpdate();
     background.draw();
     player.draw();
+    generateBlackHoles();
     generateAsteroids();
     launchProyectiles();
     printStats();
     switch (statusCheck()) {
         case "loose":
-            animationFrame = undefined;
-            console.log("loose")
+            background.gameOver();
+            animationFrame = null;
+            console.log("loose");
             break;
         case "win":
-            animationFrame = undefined;
-            console.log("win")
+            animationFrame = null;
+            console.log("win");
             break;
         default:
             break;
@@ -237,6 +271,7 @@ addEventListener("keydown", event => {
             break;
         case " ":
             proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImage.src, player.position.x + player.width / 4, player.position.y, 0, -5));
+            player.fuel -= 10;
             console.log(proyectiles);
             break;
         default:
@@ -256,9 +291,9 @@ function statsUpdate() {
 
 // Function to monitor game status
 function statusCheck() {
-    if (player.shield === 0 || player.fuel === 0) {
+    if (player.shield <= 0 || player.fuel <= 0) {
         return "loose";
-    } else if (lightYears === 0) {
+    } else if (lightYears <= 0) {
         return "win"
     } else {
         return "alive"
