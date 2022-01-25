@@ -2,11 +2,14 @@
 const canvas = document.getElementById("gameScreen");
 const context = canvas.getContext("2d");
 
-canvas.width = window.innerWidth * 0.9;
-canvas.height = window.innerHeight * 0.9;
+canvas.width = 1200;
+canvas.height = 800;
+
+
+
 
 // Declaring and/or initializing core game variables
-let animationFrame = null;
+let animationFrame = null; // to toggle game start/stop
 let frames = 0; // for animation flow control
 let lightYears = 10; // distance from goal, when light years reaches 0 you win
 
@@ -30,7 +33,7 @@ class Player {
             y: canvas.height - this.height - 20
         }
         this.image = new Image();
-        this.image.src = "./images/spaceship.png";
+        this.image.src = "./images/spaceship2.png";
         this.shield = 3;
         this.fuel = 200;
     }
@@ -167,7 +170,7 @@ function generateBlackHoles() {
 
 
 // Declare Background Class
-class Background {
+class GameBoard {
     constructor(backgroundImage) {
         this.position = {
             x: 0,
@@ -199,7 +202,7 @@ class Background {
 }
 
 // Iniate background from Player Class
-const background = new Background("./images/space.jpg");
+const background = new GameBoard("./images/space.jpg");
 
 // Function to create animation Loop
 function animationLoop() {
