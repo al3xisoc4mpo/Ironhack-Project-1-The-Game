@@ -5,31 +5,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="instructions.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <title>Instructions</title>
 </head>
 
 <body>
     <h1>How to Play</h1>
     <div class="instruction-containers">
-        <img src="./images/arrow-keys.png" alt="arrows=keys-img">
-        <p>Use the arrow keys to move the space ship in all four directions</p>
+        <img src="./images/arrow-keys.png" alt="arrow-keys-img" id="arrow-keys">
+        <p>Use the arrow keys to move the spaceship in all four directions (up,down,left,right).</p>
     </div>
     <div class="instruction-containers">
-        <img src="./images/space-key.png" alt="arrows=keys-img">
-        <p>Use the space key to shoot proyectiles but watch out! As they deplete the fuel reserves</p>
+        <img src="./images/space-key.png" alt="space-key-img" id="space-key">
+        <p>Use the space key to shoot proyectiles but be careful! Use them wisely as they deplete the fuel reserves</p>
     </div>
     <div class="instruction-containers">
-        <img src="./images/arrow-keys.png" alt="arrows=keys-img">
-        <p>Keep an eye on your shield, if you are hit by an asteroid with zero you loose<br>
-            Also keep monitoring you fuel-reserves, if we ran out of it you loose.
+        <img src="./images/asteroid.png" alt="asteroid-img" id="asteroid">
+        <p>Hitting and asteroid will lower your shields. Blast an asteroid with a proyectile!</p>
+    </div>
+    <div class="instruction-containers">
+        <img src="./images/black-hole.png" alt="black-hole-img" id="black-hole">
+        <p>Enter in contact with a black hole and loose a great amount of fuel due the gravitational pull. Stay away
+            from them!</p>
+    </div>
+    <div class="instruction-containers">
+        <div id="fuel-and-shield">
+            <img src="./images/fuel-green.png" alt="fuel-green-img" class="icons">
+            <img src="./images/fuel-yellow.png" alt="fuel-yellow-img" class="icons">
+            <img src="./images/fuel-red.png" alt="fuel-red-img" class="icons">
+            <img src="./images/shield-green.png" alt="shield-green-img" class="icons">
+            <img src="./images/shield-yellow.png" alt="shield-yellow-img" class="icons">
+            <img src="./images/shield-red.png" alt="shield-red-img" class="icons">
+        </div>
+        <p>Keep an eye on your shield, if you are hit by an asteroid with zero shields you loose<br>
+            Fuel is consumed constantly; so monitor you fuel-reserves. Ran out of it and you loose.
         </p>
     </div>
-    <h1>What will you do?</h1>
+    <h1>You win when distance to home is zero!</h1>
+    <img src="./images/light-years-counter.png" alt="">
     <div id="nav-container">
-        <a  class="nav-button" href="./index.html">Go back</a>
-        <a  class="nav-button" href="./game.html">I'm ready, let's go</a>
+        <a class="nav-button" href="./index.html">Go back</a>
+        <a class="nav-button" href="./game.html">I'm ready, let's go</a>
     </div>
 </body>
 

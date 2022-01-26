@@ -1,4 +1,6 @@
 body {
+    box-sizing: border-box;
+    margin: 2% 10%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,9 +8,11 @@ body {
     background-image: url(./images/nasaplanetnebula.jpg);
     font-family: 'Press Start 2P', cursive;
     color:white;
-    box-sizing: border-box;
-    margin: 5% 10%;
     text-align: center;
+}
+
+#logo {
+    width: 400px;
 }
 
 #nav-button {
@@ -21,9 +25,5 @@ body {
 }
 #nav-button:hover {
     color: lightsteelblue;
-    text-decoration: none;
-    font-size: 30px;
-    padding: 20px;
-    margin: 20px;
     border: 12px solid lightsteelblue;
 }

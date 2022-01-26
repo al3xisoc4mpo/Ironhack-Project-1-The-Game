@@ -10,9 +10,43 @@ body {
     margin: 5% 10%;
 }
 
-img {
+.instruction-containers {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#arrow-keys {
+    margin-right: 20px;
+    width: 250px;
+}
+
+#space-key {
+    margin: 50px 20px 50px 0;
+    width: 230px;
+}
+
+#asteroid {
+    width: 250px;
+    height: 180px;
+}
+
+#black-hole{
+    width: 250px;
+}
+
+#fuel-and-shield {
     width: 200px;
-    margin: 30px;
+    display:flex;
+    flex-wrap: wrap;
+    margin: 10px 30px;
+}
+
+.icons {
+    width: 50px;
+    margin: 0;
 }
 
 #nav-container{
@@ -27,18 +61,8 @@ img {
     margin: 20px;
     border: 12px solid white;
 }
+
 .nav-button:hover {
     color: lightsteelblue;
-    text-decoration: none;
-    font-size: 30px;
-    padding: 20px;
-    margin: 20px;
     border: 12px solid lightsteelblue;
-}
-
-.instruction-containers {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
 }

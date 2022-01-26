@@ -7,7 +7,7 @@ canvas.height = 800;
 
 window.onload = () => {
     document.getElementById('play-button').onclick = () => {
-        lightYears = 10;
+        lightYears = 1;
         player.shield = 3;
         player.fuel = 300;
     startGame();
@@ -20,7 +20,7 @@ window.onload = () => {
 // Declaring and/or initializing core game variables
 let animationFrame = null; // to toggle game start/stop
 let frames = 0; // for animation flow control
-let lightYears = 10; // distance from goal, when light years reaches 0 you win
+let lightYears = 1; // distance from goal, when light years reaches 0 you win
 
 // Declaring and assigning empty arrays for all obstacles/objects in the game
 const proyectiles = [];
@@ -33,7 +33,7 @@ const shieldImages = ["./images/shield-green.png","./images/shield-yellow.png","
 const asteroidImage = new Image();
 asteroidImage.src = "./images/asteroid.png";
 const blackHoleImage = new Image();
-blackHoleImage.src = "./images/black hole.png";
+blackHoleImage.src = "./images/black-hole.png";
 const proyectileImage = new Image();
 proyectileImage.src = "./images/proyectile.png"
 
@@ -348,7 +348,8 @@ function printStats() {
     context.textAlign = "left";
     context.fillText(`Fuel: ${player.fuel}`,80, 60);
     context.textAlign = "center"
-    context.fillText(`Light Years to Home: ${lightYears}`, canvas.width / 2, 50);
+    context.fillText(`Light Years to Home:`, canvas.width / 2, 50);
+    context.fillText(`${lightYears}`, canvas.width / 2, 75);
     context.textAlign = "right"
     context.fillText(`Shield: ${player.shield}`,1120, 60);
 }
