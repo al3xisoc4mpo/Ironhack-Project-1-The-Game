@@ -7,13 +7,15 @@ canvas.height = 800;
 
 window.onload = () => {
     document.getElementById('play-button').onclick = () => {
+        lightYears = 10;
+        player.shield = 3;
+        player.fuel = 300;
     startGame();
     };
     function startGame() {
         animationFrame = requestAnimationFrame(animationLoop)
     }
 };
-
 
 // Declaring and/or initializing core game variables
 let animationFrame = null; // to toggle game start/stop
@@ -25,6 +27,8 @@ const proyectiles = [];
 const asteroids = [];
 const blackHoles = [];
 
+const fuelImages = ["./images/fuel-green.png","./images/fuel-yellow.png","./images/fuel-red.png"]
+const shieldImages = ["./images/shield-green.png","./images/shield-yellow.png","./images/shield-red.png"]
 
 const asteroidImage = new Image();
 asteroidImage.src = "./images/asteroid.png";
@@ -45,7 +49,7 @@ class Player {
         this.image = new Image();
         this.image.src = "./images/spaceship2.png";
         this.shield = 3;
-        this.fuel = 200;
+        this.fuel = 300;
     }
     draw() {
         context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
@@ -204,7 +208,7 @@ class GameBoard {
     gameOver() {
         context.fillStyle = "rgba(0,0,0,0.8)"
         context.fillRect(0,0,canvas.width,canvas.height);
-        context.font = "bold 50px Arial";
+        context.font = "bold 50px 'Press Start 2P', cursive";
         context.textAlign = "center"
         context.fillStyle = "white"
         context.fillText("Game Over", canvas.width / 2, canvas.height / 2);
@@ -283,7 +287,7 @@ addEventListener("keydown", event => {
         case " ":
             proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImage.src, player.position.x + player.width / 4, player.position.y, 0, -5));
             player.fuel -= 10;
-            console.log(proyectiles);
+            // console.log(proyectiles);
             break;
         default:
             break;
@@ -302,7 +306,7 @@ function statsUpdate() {
 
 // Function to monitor game status
 function statusCheck() {
-    if (player.shield <= 0 || player.fuel <= 0) {
+    if (player.shield < 0 || player.fuel <= 0) {
         return "loose";
     } else if (lightYears <= 0) {
         return "win"
@@ -313,15 +317,40 @@ function statusCheck() {
 
 // Function to print stats in screen
 function printStats() {
-
-    context.font = "bold 20px Arial";
-    context.fillStyle = "white"
-    context.textAlign = "left"
-    context.fillText(`Fuel: ${player.fuel}`, canvas.width / 8, 50);
+    const fuelImage = new Image();
+    if (player.fuel >= 200){
+        fuelImage.src = fuelImages[0];
+        context.drawImage(fuelImage,20,20,50,50);
+    }
+    if (player.fuel >= 100 && player.fuel < 200){
+        fuelImage.src = fuelImages[1];
+        context.drawImage(fuelImage,20,20,50,50);
+    }
+    if (player.fuel < 100){
+        fuelImage.src = fuelImages[2];
+        context.drawImage(fuelImage,20,20,50,50);
+    }
+    const shieldImage = new Image();
+    if (player.shield === 3){
+        shieldImage.src = shieldImages[0];
+        context.drawImage(shieldImage,1120,20,60,60);
+    }
+    if (player.shield === 2){
+        shieldImage.src = shieldImages[1];
+        context.drawImage(shieldImage,1120,20,60,60);
+    }
+    if (player.shield === 1){
+        shieldImage.src = shieldImages[2];
+        context.drawImage(shieldImage,1120,20,60,60);
+    }
+    context.font = "bold 20px 'Press Start 2P', cursive";
+    context.fillStyle = "white";
+    context.textAlign = "left";
+    context.fillText(`Fuel: ${player.fuel}`,80, 60);
     context.textAlign = "center"
     context.fillText(`Light Years to Home: ${lightYears}`, canvas.width / 2, 50);
     context.textAlign = "right"
-    context.fillText(`Shield: ${player.shield}`, (canvas.width - canvas.width / 8), 50);
+    context.fillText(`Shield: ${player.shield}`,1120, 60);
 }
 
 function launchProyectiles() {
