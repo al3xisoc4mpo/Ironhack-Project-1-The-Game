@@ -31,6 +31,8 @@ const shieldImages = ["./images/shield-green.png", "./images/shield-yellow.png",
 const proyectileImagePath = "./images/proyectile.png";
 const asteroidImagePath = "./images/asteroid.png";
 const blackHoleImagePath = "./images/black-hole.png";
+const arriveToPlanetPath = "./images/nasa-planet-nebula.jpg"
+
 
 // Declaring and initializing variables for all the sound effects.
 backgroundAudio = new Audio();
@@ -219,12 +221,17 @@ class GameBoard {
         }
     }
     youWin() {
-        context.fillStyle = "rgba(0,0,0,0.8)"
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        this.image2 = new Image();
+        this.image2.src = arriveToPlanetPath;
+        context.drawImage(this.image2,0, 0,canvas.width,1200);
         context.font = "bold 50px 'Press Start 2P', cursive";
         context.textAlign = "center"
         context.fillStyle = "white"
-        context.fillText("You Win", canvas.width / 2, canvas.height / 2);
+        context.fillText("You Win!!!", canvas.width / 2, 100);
+        context.font = "bold 40px 'Press Start 2P', cursive";
+        context.fillText("Welcome home!", canvas.width / 2, canvas.height / 2 + 40);
+        context.fillText("Pilot Iron Jhack", canvas.width / 2, canvas.height / 2 + 80);
     }
     youLoose1() {
         context.fillStyle = "rgba(0,0,0,0.8)"
@@ -233,11 +240,10 @@ class GameBoard {
         context.textAlign = "center"
         context.fillStyle = "white"
         context.fillText("Game Over", canvas.width / 2, 100);
-        context.fillText("You ran out of fuel", canvas.width / 2, canvas.height / 2 + 40);
         this.image2 = new Image();
         this.image2.src = fuelImages[2];
         context.drawImage(this.image2,canvas.width/2 -50,canvas.height/4 + 50,100,100);
-
+        context.fillText("You ran out of fuel", canvas.width / 2, canvas.height / 2 + 40);
     }
     youLoose2() {
         context.fillStyle = "rgba(0,0,0,0.8)"
@@ -246,12 +252,12 @@ class GameBoard {
         context.textAlign = "center"
         context.fillStyle = "white"
         context.fillText("Game Over", canvas.width / 2, 100);
-        context.font = "bold 40px 'Press Start 2P', cursive";
-        context.fillText("Destroyed, impacted by an", canvas.width / 2, canvas.height / 2 + 40);
-        context.fillText("asteroid with no shield", canvas.width / 2, canvas.height / 2 + 80);
         this.image2 = new Image();
         this.image2.src = shieldImages[2];
         context.drawImage(this.image2,canvas.width/2 -50,canvas.height/4 + 30,100,100);
+        context.font = "bold 40px 'Press Start 2P', cursive";
+        context.fillText("Destroyed, impacted by an", canvas.width / 2, canvas.height / 2 + 40);
+        context.fillText("asteroid with no shield", canvas.width / 2, canvas.height / 2 + 80);
     }
 }
 
@@ -271,16 +277,16 @@ function animationLoop() {
     printStats();
     switch (statusCheck()) {
         case "win":
-            background.youWin();
             animationFrame = null;
+            background.youWin();
             break;
         case "loose1":
-            background.youLoose1();
             animationFrame = null;
+            background.youLoose1();
             break;
         case "loose2":
-            background.youLoose2();
             animationFrame = null;
+            background.youLoose2();
             break;
         default:
             break;
