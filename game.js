@@ -47,7 +47,7 @@ let hasGameEnded = false;
 
 let shield = 3; // shield level, getting hit with zero shield and you loose
 let fuel = 150; // fuel reserves, when depleted you loose
-let lightYears = 0; // distance from goal, when light years reaches 0 you win
+let lightYears = 3; // distance from goal, when light years reaches 0 you win
 
 // Declaring and initializing variables with empty arrays for all obstacles/objects in the game
 const proyectiles = [];
@@ -129,7 +129,7 @@ class Obstacle {
 
 // Generating Asteroids and monitoring for collision.
 function generateAsteroids() {
-    if (frames % 50 === 0 || frames % 150 === 0 || frames % 200 === 0 || frames % 250 === 0) {
+    if (frames % 30 === 0 || frames % 60 === 0 || frames % 90 === 0 || frames % 120 === 0 || frames % 150 === 0) {
         const asteroid = new Obstacle(80, 80, asteroidImagePath, 0.8, 1.6);
         asteroids.push(asteroid);
     }
