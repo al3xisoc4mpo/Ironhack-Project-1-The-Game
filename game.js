@@ -17,7 +17,7 @@ window.onload = () => {
             startGame();
         } else {
             playButton.src = "./images/play-button.png"
-            context.fillStyle = "rgba(0,0,0,0.8)"
+            context.fillStyle = "rgba(0,0,0,0.7)"
             context.fillRect(0, 0, canvas.width, canvas.height);
             context.font = "bold 30px 'Press Start 2P', cursive";
             context.textAlign = "center"
@@ -47,7 +47,7 @@ let hasGameEnded = false;
 
 let shield = 3; // shield level, getting hit with zero shield and you loose
 let fuel = 150; // fuel reserves, when depleted you loose
-let lightYears = 3; // distance from goal, when light years reaches 0 you win
+let lightYears = 0; // distance from goal, when light years reaches 0 you win
 
 // Declaring and initializing variables with empty arrays for all obstacles/objects in the game
 const proyectiles = [];
@@ -259,9 +259,11 @@ class GameBoard {
         context.font = "bold 40px 'Press Start 2P', cursive";
         context.fillText("Welcome home!", canvas.width / 2, canvas.height / 2 + 40);
         context.fillText("Pilot Iron Jhack", canvas.width / 2, canvas.height / 2 + 80);
+        context.font = "bold 30px 'Press Start 2P', cursive";
+        context.fillText("Press R to play again", canvas.width / 2, canvas.height / 2 + 160);
     }
     youLoose1() {
-        context.fillStyle = "rgba(0,0,0,0.8)"
+        context.fillStyle = "rgb(0,0,0)"
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.font = "bold 50px 'Press Start 2P', cursive";
         context.textAlign = "center"
@@ -275,7 +277,7 @@ class GameBoard {
         context.fillText("Press R to play again", canvas.width / 2, canvas.height / 2 + 120);
     }
     youLoose2() {
-        context.fillStyle = "rgba(0,0,0,0.8)"
+        context.fillStyle = "rgb(0,0,0)"
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.font = "bold 50px 'Press Start 2P', cursive";
         context.textAlign = "center"
@@ -326,11 +328,6 @@ function animationLoop() {
         animationFrame = requestAnimationFrame(animationLoop);
     };
 }
-
-// Function to start the game
-// function startGame() {
-//     animationFrame = requestAnimationFrame(animationLoop)
-// }
 
 // Generate movement pattern for the player
 addEventListener("keydown", event => {
