@@ -3,7 +3,7 @@ const canvas = document.getElementById("gameScreen");
 const context = canvas.getContext("2d");
 
 canvas.width = 1200;
-canvas.height = 800;
+canvas.height = 580;
 
 // Obtaining the play/pause button
 playButton = document.getElementById('play-button');
@@ -46,7 +46,7 @@ let hasGameEnded = false;
 
 
 let shield = 3; // shield level, getting hit with zero shield and you loose
-let fuel = 150; // fuel reserves, when depleted you loose
+let fuel = 300; // fuel reserves, when depleted you loose
 let lightYears = 3; // distance from goal, when light years reaches 0 you win
 
 // Declaring and initializing variables with empty arrays for all obstacles/objects in the game
@@ -79,8 +79,8 @@ blackHoleAudio.src = "./sound/black-hole.mp3"
 // Declaring Player Class
 class Player {
     constructor() {
-        this.width = 80;
-        this.height = 80;
+        this.width = 60;
+        this.height = 60;
         this.position = {
             x: (canvas.width / 2) - (this.width / 2),
             y: canvas.height - this.height - 20
@@ -362,7 +362,7 @@ addEventListener("keydown", event => {
             break;
         case " ":
             proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImagePath, player.position.x + player.width / 4, player.position.y, 0, -5));
-            missileFiringAudio.play();
+            // missileFiringAudio.play();
             fuel -= 10;
             // console.log(proyectiles);
             break;
@@ -406,15 +406,15 @@ function statusCheck() {
 // Function to print stats in screen
 function printStats() {
     const fuelImage = new Image();
-    if (fuel >= 100) {
+    if (fuel >= 200) {
         fuelImage.src = fuelImages[0];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
-    if (fuel >= 50 && fuel < 100) {
+    if (fuel >= 100 && fuel < 200) {
         fuelImage.src = fuelImages[1];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
-    if (fuel < 50) {
+    if (fuel < 100) {
         fuelImage.src = fuelImages[2];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
@@ -445,6 +445,7 @@ function printStats() {
 // Function to launch proyectiles
 function launchProyectiles() {
     proyectiles.forEach((proyectile, proyectile_index) => {
+        missileFiringAudio.play();
         proyectile.draw();
         if (proyectile.position.y + proyectile.height <= 0) {
             proyectiles.splice(proyectile_index, 1);
@@ -456,7 +457,7 @@ function launchProyectiles() {
 function restartGame() {
     if (hasGameEnded) {
         shield = 3;
-        fuel = 150;
+        fuel = 300;
         lightYears = 3;
         proyectiles.splice(0, proyectiles.length);
         asteroids.splice(0, asteroids.length);

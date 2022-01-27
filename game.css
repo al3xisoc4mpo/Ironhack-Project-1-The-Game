@@ -26,6 +26,10 @@ body {
     height: 50px;
 }
 
+#good-luck{
+    font-size: 20px;
+}
+
 canvas {
     background-color: black;
 }
