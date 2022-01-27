@@ -5,14 +5,15 @@ const context = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = 800;
 
-playButton = document.getElementById('play-button')
+// Obtaining the play/pause button
+playButton = document.getElementById('play-button');
 
 // Event listener for starting game when play button is clicked
 window.onload = () => {
     playButton.onclick = () => {
         isPaused = !isPaused;
         if (isPaused) {
-            playButton.src = "./images/pause-button.png"
+            playButton.src = "./images/pause-button.png";
             startGame();
         } else {
             playButton.src = "./images/play-button.png"
@@ -27,18 +28,26 @@ window.onload = () => {
             startGame();
         }
     };
-    function startGame() {
-        if (isPaused) {
-            backgroundAudio.play();
-            animationFrame = requestAnimationFrame(animationLoop)
-        }
-    }
 };
+
+// Function to Start Game
+function startGame() {
+    if (isPaused) {
+        backgroundAudio.play();
+        animationFrame = requestAnimationFrame(animationLoop)
+    }
+}
 
 // Declaring and/or initializing core game variables
 let animationFrame = null; // to toggle game start/stop
 let frames = 0; // for animation flow control
 let isPaused = false; // to monitor pause state;
+let hasGameEnded = false;
+
+
+let shield = 3; // shield level, getting hit with zero shield and you loose
+let fuel = 150; // fuel reserves, when depleted you loose
+let lightYears = 3; // distance from goal, when light years reaches 0 you win
 
 // Declaring and initializing variables with empty arrays for all obstacles/objects in the game
 const proyectiles = [];
@@ -57,6 +66,7 @@ const arriveToPlanetPath = "./images/nasa-planet-nebula.jpg"
 // Declaring and initializing variables for all the sound effects.
 backgroundAudio = new Audio();
 backgroundAudio.src = "./sound/background-audio.mp3"
+backgroundAudio.loop = true;
 missileFiringAudio = new Audio();
 missileFiringAudio.src = "./sound/missile-firing.mp3"
 shieldImpactAudio = new Audio();
@@ -77,9 +87,6 @@ class Player {
         }
         this.image = new Image();
         this.image.src = "./images/spaceship.png";
-        this.shield = 3; // shield level, getting hit with zero shield and you loose
-        this.fuel = 150; // fuel reserves, when depleted you loose
-        this.lightYears = 3; // distance from goal, when light years reaches 0 you win
     }
     draw() {
         context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
@@ -129,12 +136,12 @@ function generateAsteroids() {
     asteroids.forEach((asteroid, asteroid_index) => {
         asteroid.draw();
         if (player.collision(asteroid)) {
-            if (player.shield > 0) {
+            if (shield > 0) {
                 shieldImpactAudio.play();
             } else {
                 explosionAudio.play();
             }
-            player.shield--;
+            shield--;
             asteroids.splice(asteroid_index, 1);
         }
         proyectiles.forEach((proyectile, proyectile_index) => {
@@ -160,7 +167,7 @@ function generateBlackHoles() {
         blackHole.draw();
         if (player.collision(blackHole)) {
             blackHoleAudio.play();
-            player.fuel -= 30;
+            fuel -= 30;
             blackHoles.splice(blackHole_index, 1);
         }
         proyectiles.forEach((proyectile, proyectile_index) => {
@@ -264,6 +271,8 @@ class GameBoard {
         this.image2.src = fuelImages[2];
         context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4 + 50, 100, 100);
         context.fillText("You ran out of fuel", canvas.width / 2, canvas.height / 2 + 40);
+        context.font = "bold 30px 'Press Start 2P', cursive";
+        context.fillText("Press R to play again", canvas.width / 2, canvas.height / 2 + 120);
     }
     youLoose2() {
         context.fillStyle = "rgba(0,0,0,0.8)"
@@ -274,10 +283,12 @@ class GameBoard {
         context.fillText("Game Over", canvas.width / 2, 100);
         this.image2 = new Image();
         this.image2.src = shieldImages[2];
-        context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4 + 30, 100, 100);
+        context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4 + 20, 100, 100);
         context.font = "bold 40px 'Press Start 2P', cursive";
         context.fillText("Destroyed, impacted by an", canvas.width / 2, canvas.height / 2 + 40);
         context.fillText("asteroid with no shield", canvas.width / 2, canvas.height / 2 + 80);
+        context.font = "bold 30px 'Press Start 2P', cursive";
+        context.fillText("Press R to play again", canvas.width / 2, canvas.height / 2 + 160);
     }
 }
 
@@ -328,7 +339,6 @@ addEventListener("keydown", event => {
             if ((player.position.x - 30) < 0) {
                 player.position.x = 0;
             } else {
-
                 player.position.x -= 30;
             }
             break;
@@ -356,9 +366,11 @@ addEventListener("keydown", event => {
         case " ":
             proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImagePath, player.position.x + player.width / 4, player.position.y, 0, -5));
             missileFiringAudio.play();
-            player.fuel -= 10;
+            fuel -= 10;
             // console.log(proyectiles);
             break;
+        case "r":
+            restartGame();
         default:
             break;
     };
@@ -367,22 +379,29 @@ addEventListener("keydown", event => {
 // Function to update player stats
 function statsUpdate() {
     if (frames % 1200 === 0) {
-        player.lightYears--;
+        lightYears--;
     }
     if (frames % 100 === 0) {
-        player.fuel--;
+        fuel--;
     }
 }
 
 // Function to monitor game status
 function statusCheck() {
-    if (player.lightYears === 0) {
+    if (lightYears === 0) {
+        hasGameEnded = true;
+        // console.log(hasGameEnded);
         return "win"
-    } else if (player.fuel <= 0) {
+    } else if (fuel <= 0) {
+        hasGameEnded = true;
+        // console.log(hasGameEnded);
         return "loose1"
-    } else if (player.shield < 0) {
+    } else if (shield < 0) {
+        hasGameEnded = true;
+        // console.log(hasGameEnded);
         return "loose2";
     } else {
+        hasGameEnded = false;
         return "alive"
     }
 }
@@ -390,42 +409,43 @@ function statusCheck() {
 // Function to print stats in screen
 function printStats() {
     const fuelImage = new Image();
-    if (player.fuel >= 100) {
+    if (fuel >= 100) {
         fuelImage.src = fuelImages[0];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
-    if (player.fuel >= 50 && player.fuel < 100) {
+    if (fuel >= 50 && fuel < 100) {
         fuelImage.src = fuelImages[1];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
-    if (player.fuel < 50) {
+    if (fuel < 50) {
         fuelImage.src = fuelImages[2];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
     const shieldImage = new Image();
-    if (player.shield === 3) {
+    if (shield === 3) {
         shieldImage.src = shieldImages[0];
         context.drawImage(shieldImage, 1120, 20, 60, 60);
     }
-    if (player.shield === 2) {
+    if (shield === 2) {
         shieldImage.src = shieldImages[1];
         context.drawImage(shieldImage, 1120, 20, 60, 60);
     }
-    if (player.shield === 1) {
+    if (shield === 1) {
         shieldImage.src = shieldImages[2];
         context.drawImage(shieldImage, 1120, 20, 60, 60);
     }
     context.font = "bold 20px 'Press Start 2P', cursive";
     context.fillStyle = "white";
     context.textAlign = "left";
-    context.fillText(`Fuel: ${player.fuel}`, 80, 60);
+    context.fillText(`Fuel: ${fuel}`, 80, 60);
     context.textAlign = "center"
     context.fillText(`Light Years to Home:`, canvas.width / 2, 50);
-    context.fillText(`${player.lightYears}`, canvas.width / 2, 75);
+    context.fillText(`${lightYears}`, canvas.width / 2, 75);
     context.textAlign = "right"
-    context.fillText(`Shield: ${player.shield}`, 1120, 60);
+    context.fillText(`Shield: ${shield}`, 1120, 60);
 }
 
+// Function to launch proyectiles
 function launchProyectiles() {
     proyectiles.forEach((proyectile, proyectile_index) => {
         proyectile.draw();
@@ -433,4 +453,21 @@ function launchProyectiles() {
             proyectiles.splice(proyectile_index, 1);
         }
     });
+}
+
+// Function for restarting game
+function restartGame() {
+    if (hasGameEnded) {
+        shield = 3;
+        fuel = 150;
+        lightYears = 3;
+        proyectiles.splice(0, proyectiles.length);
+        asteroids.splice(0, asteroids.length);
+        blackHoles.splice(0, blackHoles.length);
+        player.position.x = (canvas.width / 2) - (player.width / 2);
+        player.position.y = canvas.height - player.height - 20;
+        startGame();
+        hasGameEnded = !hasGameEnded;
+        // console.log(hasGameEnded);
+    }
 }
