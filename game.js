@@ -5,20 +5,40 @@ const context = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = 800;
 
+playButton = document.getElementById('play-button')
+
 // Event listener for starting game when play button is clicked
 window.onload = () => {
-    document.getElementById('play-button').onclick = () => {
-        backgroundAudio.play();
-        startGame();
+    playButton.onclick = () => {
+        isPaused = !isPaused;
+        if (isPaused) {
+            playButton.src = "./images/pause-button.png"
+            startGame();
+        } else {
+            playButton.src = "./images/play-button.png"
+            context.fillStyle = "rgba(0,0,0,0.8)"
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.font = "bold 30px 'Press Start 2P', cursive";
+            context.textAlign = "center"
+            context.fillStyle = "white"
+            context.fillText("Paused", canvas.width / 2, canvas.height / 2);
+            cancelAnimationFrame(animationFrame);
+            backgroundAudio.pause();
+            startGame();
+        }
     };
     function startGame() {
-        animationFrame = requestAnimationFrame(animationLoop)
+        if (isPaused) {
+            backgroundAudio.play();
+            animationFrame = requestAnimationFrame(animationLoop)
+        }
     }
 };
 
 // Declaring and/or initializing core game variables
 let animationFrame = null; // to toggle game start/stop
 let frames = 0; // for animation flow control
+let isPaused = false; // to monitor pause state;
 
 // Declaring and initializing variables with empty arrays for all obstacles/objects in the game
 const proyectiles = [];
@@ -102,7 +122,7 @@ class Obstacle {
 
 // Generating Asteroids and monitoring for collision.
 function generateAsteroids() {
-    if (frames % 50 === 0 || frames % 150 === 0 || frames % 200 === 0 || frames % 250 === 0 ) {
+    if (frames % 50 === 0 || frames % 150 === 0 || frames % 200 === 0 || frames % 250 === 0) {
         const asteroid = new Obstacle(80, 80, asteroidImagePath, 0.8, 1.6);
         asteroids.push(asteroid);
     }
@@ -224,7 +244,7 @@ class GameBoard {
         context.clearRect(0, 0, canvas.width, canvas.height);
         this.image2 = new Image();
         this.image2.src = arriveToPlanetPath;
-        context.drawImage(this.image2,0, 0,canvas.width,1200);
+        context.drawImage(this.image2, 0, 0, canvas.width, 1200);
         context.font = "bold 50px 'Press Start 2P', cursive";
         context.textAlign = "center"
         context.fillStyle = "white"
@@ -242,7 +262,7 @@ class GameBoard {
         context.fillText("Game Over", canvas.width / 2, 100);
         this.image2 = new Image();
         this.image2.src = fuelImages[2];
-        context.drawImage(this.image2,canvas.width/2 -50,canvas.height/4 + 50,100,100);
+        context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4 + 50, 100, 100);
         context.fillText("You ran out of fuel", canvas.width / 2, canvas.height / 2 + 40);
     }
     youLoose2() {
@@ -254,7 +274,7 @@ class GameBoard {
         context.fillText("Game Over", canvas.width / 2, 100);
         this.image2 = new Image();
         this.image2.src = shieldImages[2];
-        context.drawImage(this.image2,canvas.width/2 -50,canvas.height/4 + 30,100,100);
+        context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4 + 30, 100, 100);
         context.font = "bold 40px 'Press Start 2P', cursive";
         context.fillText("Destroyed, impacted by an", canvas.width / 2, canvas.height / 2 + 40);
         context.fillText("asteroid with no shield", canvas.width / 2, canvas.height / 2 + 80);
