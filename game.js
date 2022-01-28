@@ -252,26 +252,26 @@ class GameBoard {
         this.image2 = new Image();
         this.image2.src = arriveToPlanetPath;
         context.drawImage(this.image2, 0, 0, canvas.width, 1200);
-        context.font = "bold 50px 'Press Start 2P', cursive";
+        context.font = "bold 40px 'Press Start 2P', cursive";
         context.textAlign = "center"
         context.fillStyle = "white"
         context.fillText("You Win!!!", canvas.width / 2, 100);
-        context.font = "bold 40px 'Press Start 2P', cursive";
+        context.font = "bold 30px 'Press Start 2P', cursive";
         context.fillText("Welcome home!", canvas.width / 2, canvas.height / 2 + 40);
         context.fillText("Pilot Iron Jhack", canvas.width / 2, canvas.height / 2 + 80);
-        context.font = "bold 30px 'Press Start 2P', cursive";
+        context.font = "bold 20px 'Press Start 2P', cursive";
         context.fillText("Press R to play again", canvas.width / 2, canvas.height / 2 + 160);
     }
     youLoose1() {
         context.fillStyle = "rgb(0,0,0)"
         context.fillRect(0, 0, canvas.width, canvas.height);
-        context.font = "bold 50px 'Press Start 2P', cursive";
+        context.font = "bold 54px 'Press Start 2P', cursive";
         context.textAlign = "center"
         context.fillStyle = "white"
         context.fillText("Game Over", canvas.width / 2, 100);
         this.image2 = new Image();
         this.image2.src = fuelImages[2];
-        context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4 + 50, 100, 100);
+        context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4 + 20, 100, 100);
         context.fillText("You ran out of fuel", canvas.width / 2, canvas.height / 2 + 40);
         context.font = "bold 30px 'Press Start 2P', cursive";
         context.fillText("Press R to play again", canvas.width / 2, canvas.height / 2 + 120);
@@ -285,7 +285,7 @@ class GameBoard {
         context.fillText("Game Over", canvas.width / 2, 100);
         this.image2 = new Image();
         this.image2.src = shieldImages[2];
-        context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4 + 20, 100, 100);
+        context.drawImage(this.image2, canvas.width / 2 - 50, canvas.height / 4, 100, 100);
         context.font = "bold 40px 'Press Start 2P', cursive";
         context.fillText("Destroyed, impacted by an", canvas.width / 2, canvas.height / 2 + 40);
         context.fillText("asteroid with no shield", canvas.width / 2, canvas.height / 2 + 80);
@@ -361,8 +361,7 @@ addEventListener("keydown", event => {
             }
             break;
         case " ":
-            proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImagePath, player.position.x + player.width / 4, player.position.y, 0, -5));
-            // missileFiringAudio.play();
+            proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImagePath, player.position.x + player.width / 4, player.position.y, 0, -8));
             fuel -= 10;
             // console.log(proyectiles);
             break;
