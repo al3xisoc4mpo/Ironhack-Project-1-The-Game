@@ -47,7 +47,7 @@ let hasGameEnded = false;
 
 let shield = 3; // shield level, getting hit with zero shield and you loose
 let fuel = 270; // fuel reserves, when depleted you loose
-let lightYears = 3; // distance from goal, when light years reaches 0 you win
+let lightYears = 2; // distance from goal, when light years reaches 0 you win
 
 // Declaring and initializing variables with empty arrays for all obstacles/objects in the game
 const proyectiles = [];
