@@ -374,7 +374,7 @@ addEventListener("keydown", event => {
 
 // Function to update player stats
 function statsUpdate() {
-    if (frames % 1200 === 0) {
+    if (frames % 1000 === 0) {
         lightYears--;
     }
     if (frames % 100 === 0) {
@@ -436,7 +436,8 @@ function printStats() {
     context.fillText(`Fuel: ${fuel}`, 80, 60);
     context.textAlign = "center"
     context.fillText(`Light Years to Home:`, canvas.width / 2, 50);
-    context.fillText(`${lightYears}`, canvas.width / 2, 75);
+    context.font = "bold 30px 'Press Start 2P', cursive";
+    context.fillText(`${lightYears}`, canvas.width / 2, 80);
     context.textAlign = "right"
     context.fillText(`Shield: ${shield}`, 1120, 60);
 }
@@ -457,7 +458,7 @@ function restartGame() {
     if (hasGameEnded) {
         shield = 3;
         fuel = 300;
-        lightYears = 3;
+        lightYears = 2;
         proyectiles.splice(0, proyectiles.length);
         asteroids.splice(0, asteroids.length);
         blackHoles.splice(0, blackHoles.length);
