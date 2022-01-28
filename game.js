@@ -46,7 +46,7 @@ let hasGameEnded = false;
 
 
 let shield = 3; // shield level, getting hit with zero shield and you loose
-let fuel = 300; // fuel reserves, when depleted you loose
+let fuel = 270; // fuel reserves, when depleted you loose
 let lightYears = 3; // distance from goal, when light years reaches 0 you win
 
 // Declaring and initializing variables with empty arrays for all obstacles/objects in the game
@@ -405,15 +405,15 @@ function statusCheck() {
 // Function to print stats in screen
 function printStats() {
     const fuelImage = new Image();
-    if (fuel >= 200) {
+    if (fuel >= 180) {
         fuelImage.src = fuelImages[0];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
-    if (fuel >= 100 && fuel < 200) {
+    if (fuel >= 90 && fuel < 180) {
         fuelImage.src = fuelImages[1];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
-    if (fuel < 100) {
+    if (fuel < 90) {
         fuelImage.src = fuelImages[2];
         context.drawImage(fuelImage, 20, 20, 50, 50);
     }
