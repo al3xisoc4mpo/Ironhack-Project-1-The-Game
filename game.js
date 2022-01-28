@@ -361,7 +361,7 @@ addEventListener("keydown", event => {
             }
             break;
         case " ":
-            proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImagePath, player.position.x + player.width / 4, player.position.y, 0, -8));
+            proyectiles.push(new Proyectile(player.width / 2, player.height / 2, proyectileImagePath, player.position.x + player.width / 4, player.position.y, 0, -10));
             fuel -= 10;
             // console.log(proyectiles);
             break;
