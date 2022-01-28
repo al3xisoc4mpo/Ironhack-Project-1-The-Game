@@ -457,7 +457,7 @@ function launchProyectiles() {
 function restartGame() {
     if (hasGameEnded) {
         shield = 3;
-        fuel = 300;
+        fuel = 270;
         lightYears = 2;
         proyectiles.splice(0, proyectiles.length);
         asteroids.splice(0, asteroids.length);
