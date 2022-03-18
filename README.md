@@ -1,7 +1,10 @@
-# READ ME
+# Space Escape :rocket:
+## Space shooter but with RPG elements
+### *Javascrip Desktop Videogame*
+**Technologies used:** Javascript, HTML (canvas element), CSS.
 
-## Espace Escape
+How about a space shooter with a twist? I added a different gameplay mechanic to the regular space shooter genre. Hope you enjoy!
 
-## You're a space pilot trying to come back home
+## Credits
 
-### Pilot Iron Jhack from the Space Surveillance Corps is now close to Alpha Centaury-220110, home to all humans previously living on Earth. After a succesful mission on Earth his ship was hit by a solar flare; instantly damaging his navigation and resource-administration systems. With a populated asteroid belt and lots of black holes in the way will he be able to come back home?
+For further questions or suggestions you can email me at: [alexisocampo.dev@gmail.com](mailto:alexisocampo.dev@gmail.com) or at my twitter [@alexis_dev1](https://twitter.com/alexis_dev1)
